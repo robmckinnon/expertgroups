@@ -82,6 +82,7 @@ PLATFORMS
 
 DEPENDENCIES
   RedCloth
+  bundler
   friendly_id
   irwi
   morph
