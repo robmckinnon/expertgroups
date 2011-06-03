@@ -86,4 +86,4 @@ DEPENDENCIES
   irwi
   morph
   pg
-  rails (= 3.0.7)
+  rails
