@@ -2,6 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rails'
 gem 'bundler'
+gem 'thin'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
