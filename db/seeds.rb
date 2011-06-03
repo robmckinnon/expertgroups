@@ -48,7 +48,7 @@ def path name
 end
 
 def load_file file
-  csv = IO.read("#{RAILS_ROOT}/data/#{file}")
+  csv = IO.read("#{RAILS_ROOT}/public/#{file}")
   items = Morph.from_csv(csv, 'Item')
   yield items
   items
