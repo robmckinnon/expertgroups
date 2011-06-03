@@ -26,11 +26,11 @@ gem 'morph'
 gem 'RedCloth'
 gem 'friendly_id'
 
-if __FILE__.include?('/x/apps/')
-  group :development, :test do
-    gem 'mysql2', '0.2.7'
-  end
-end
+# if __FILE__.include?('/x/apps/')
+  # group :development, :test do
+    # gem 'mysql2', '0.2.7'
+  # end
+# end
 
 group :production do
   gem 'pg'
