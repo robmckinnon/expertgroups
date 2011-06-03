@@ -1,5 +1,5 @@
 Expertgroups::Application.routes.draw do
-  wiki_root '/wiki'
+  wiki_root '/expert_groups'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

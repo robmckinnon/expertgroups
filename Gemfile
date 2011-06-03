@@ -30,11 +30,12 @@ if __FILE__.include?('/x/apps/')
   group :development, :test do
     gem 'mysql2', '0.2.7'
   end
-else
-  group :production do
-    gem 'pg'
-  end
 end
+
+group :production do
+  gem 'pg'
+end
+
 # Bundle gems for the local environment. Make sure to
 # put test-only gems in this group so their generators
 # and rake tasks are available in development mode:
