@@ -470,7 +470,7 @@ def create_home_page
 end
 
 create_home_page
-=begin
+# =begin
 individuals = {}
 load_file('ec_expert_group_individual_members.csv') { |items| individuals = items }
 
@@ -494,4 +494,4 @@ create_entity_indexes(individuals, group_to_en_name, 'Individuals', nil) { |name
 create_organisation_indexes organisations, group_to_en_name
 
 create_entity_indexes(administrations, group_to_en_name, 'National Administrations', nil) { |name, entity, fields| add_administration_fields entity, fields }
-=end
+# =end
