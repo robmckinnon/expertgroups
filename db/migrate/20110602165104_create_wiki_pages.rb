@@ -37,7 +37,7 @@ class CreateWikiPages < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :wiki_page_versions
+    # drop_table :wiki_page_versions
     drop_table :wiki_pages
   end
 
