@@ -224,6 +224,7 @@ def add_administration_fields administration, content
     elsif administration.public_authorities.size > 0
       content << "- Public authorities := #{administration.public_authorities}"
     end
+  end
   unless administration.representatives.nil? || administration.representatives[/Representative may vary/]
     content << "- Representatives :=\n#{administration.representatives} =:" if administration.representatives && administration.representatives.size > 0
   end
@@ -446,8 +447,9 @@ end
 def create_home_page
   content = ["This site contains a copy of the *Register of European Commission Expert Groups and Other Similar Entities*. For each group, the register provides standard information such as the Commission department running the group, as well as the group's mission, tasks and membership.\n\n"]
 
-  content << "*Browse* the expert groups by:"
+  content << "We made this web application to allow you to *browse expert groups* by:"
   content << "* [[policy-areas|Policy Area]]"
+  content << "* [[organisations|Organisations]]\n"
   content << "* [[directorate-generals|Directorate Generals]]\n"
 
   content << "*Download* the data under the share-alike attribution Open Database License:"
