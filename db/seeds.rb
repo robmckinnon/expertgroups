@@ -23,7 +23,11 @@ module Morph
 
     def link_name
       if member_type == 'Organisation'
-        acronym ? acronym : name
+        if name == 'Competent national authority'
+          "#{name} (#{countries_areas_represented})"
+        else
+          acronym ? acronym : name
+        end
       else
         name
       end
@@ -149,7 +153,7 @@ end
 
 def crumb_trail *list
   last = list.pop
-  eg = 'Expert Groups'
+  eg = 'European Commission Expert Groups'
   trail = ["[[ |#{eg}]]"]
 
   list.each do |item|
@@ -207,9 +211,16 @@ def add_organisation_fields name, organisation, content
   add_field content, organisation, 'Name', :name if organisation.name != name
   add_field content, organisation, 'Member type', :member_type
   add_field content, organisation, 'Area represented', :countries_areas_represented
+  unless organisation.representatives[/Representative may vary/]
+    content << "- Representatives :=\n#{organisation.representatives} =:" if organisation.representatives && organisation.representatives.size > 0
+  end
 end
 
 def add_administration_fields administration, content
+  content << "- Public authorities :=\n#{administration.public_authorities} =:" if administration.public_authorities && administration.public_authorities.size > 0
+  unless organisation.representatives[/Representative may vary/]
+    content << "- Representatives :=\n#{administration.representatives} =:" if administration.representatives && administration.representatives.size > 0
+  end
 end
 
 def add_individual_fields individual, content
@@ -232,9 +243,8 @@ def create_entity_page name, list, group_to_en_name, type, supertype, subtype=ni
             else
               [crumb_trail(type, name)]
             end
-  content << "h2. #{name}\n"
-
   by_group = list.group_by(&:group_name)
+  content << "\n*#{name}* is a member of #{by_group.keys.uniq} expert group#{by_group.keys.uniq.size > 1 ? 's' : ''}.\n"
   by_group.keys.sort.each do |group_name|
     items = by_group[group_name]
     group_name = group_to_en_name[clean_text(group_name)]
@@ -358,6 +368,13 @@ def remove_singleton_acronyms(organisations)
       end
     end
   end
+
+  organisations.group_by(&:link_name).each do |link_name, list|
+    if list.map(&:category).uniq.size > 1
+      set_category list, list.last.category
+      puts link_name # each link_name should only have one category
+    end
+  end
 end
 
 def create_organisation_indexes organisations, group_to_en_name
@@ -366,14 +383,25 @@ def create_organisation_indexes organisations, group_to_en_name
 
   organisations_by_category.each do |category, list|
 
-    organisations_by_region = list.group_by(&:countries_areas_represented)
+    organisations_by_region = list.group_by do |x|
+      if x.countries_areas_represented && x.countries_areas_represented.size > 0
+        if x.countries_areas_represented.split("\n").size > 1
+          "#{category} (Multiple)"
+        else
+          "#{category} (#{x.countries_areas_represented})"
+        end
+      else
+        "#{category} (Other)"
+      end
+    end
+
     content = [crumb_trail('Organisations', category)]
     content << "h2. #{category} in Expert Groups\n"
     content = create_index_for(content, organisations_by_region)
-    create_page(category.downcase.gsub(' ','-'), "#{title} - European Commission Expert Groups", content)
+    create_page(category.downcase.gsub(' ','-'), "#{category} - European Commission Expert Groups", content)
 
-    organisations_by_region.each do |region, orgs|
-      title = "#{category} (#{region})"
+    organisations_by_region.each do |category_region, orgs|
+      title = category_region
       create_entity_indexes(orgs, group_to_en_name, title, 'Organisations', category) do |name, entity, fields|
         add_organisation_fields name, entity, fields
       end
@@ -400,7 +428,7 @@ def create_entity_indexes entities, group_to_en_name, title, supertype, subtype=
   by_name = entities.group_by {|x| clean_text(x.link_name) }
 
   content = create_index_for(content, by_name)
-  create_page(title.downcase.gsub(' ','-'), "#{title} - European Commission Expert Groups", content)
+  create_page(path(title.downcase.gsub(' ','-')), "#{title} - European Commission Expert Groups", content)
 
   entities.group_by(&:link_name).each do |name, list|
     create_entity_page(clean_text(name), list, group_to_en_name, title, supertype, subtype) do |name, entity, fields|
