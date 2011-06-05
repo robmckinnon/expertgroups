@@ -1,7 +1,7 @@
 class CreateWikiPages < ActiveRecord::Migration
 
   def self.up
-    create_table :wiki_pages do |t|
+    create_table :wiki_pages, :options => 'default charset=utf8' do |t|
       t.integer :creator_id
       t.integer :updator_id
 
@@ -16,7 +16,7 @@ class CreateWikiPages < ActiveRecord::Migration
     add_index :wiki_pages, :creator_id
     add_index :wiki_pages, :path, :unique => true
 
-    create_table :wiki_page_versions do |t|
+    create_table :wiki_page_versions, :options => 'default charset=utf8' do |t|
       t.integer :page_id, :null => false # Reference to page
       t.integer :updator_id # Reference to user, updated page
 

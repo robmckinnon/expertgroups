@@ -53,6 +53,7 @@ GEM
     mime-types (1.16)
     morph (0.3.2)
       activesupport (>= 2.0.2)
+    mysql2 (0.2.7)
     pg (0.11.0)
     polyglot (0.3.1)
     rack (1.2.3)
@@ -88,10 +89,10 @@ PLATFORMS
 
 DEPENDENCIES
   RedCloth
-  bundler
   friendly_id
   irwi
   morph
+  mysql2 (= 0.2.7)
   pg
-  rails
+  rails (= 3.0.7)
   thin

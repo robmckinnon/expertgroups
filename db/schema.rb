@@ -10,16 +10,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110602165104) do
+ActiveRecord::Schema.define(:version => 20110605133628) do
 
   create_table "wiki_page_versions", :force => true do |t|
-    t.integer  "page_id",    :null => false
+    t.integer  "page_id",                        :null => false
     t.integer  "updator_id"
     t.integer  "number"
     t.string   "comment"
     t.string   "path"
     t.string   "title"
-    t.text     "content"
+    t.text     "content",    :limit => 16777215
     t.datetime "updated_at"
   end
 
@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(:version => 20110602165104) do
     t.integer  "updator_id"
     t.string   "path"
     t.string   "title"
-    t.text     "content"
+    t.text     "content",    :limit => 16777215
     t.datetime "created_at"
     t.datetime "updated_at"
   end

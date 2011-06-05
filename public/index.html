@@ -1,239 +1,149 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Ruby on Rails: Welcome aboard</title>
-    <style type="text/css" media="screen">
-      body {
-        margin: 0;
-        margin-bottom: 25px;
-        padding: 0;
-        background-color: #f0f0f0;
-        font-family: "Lucida Grande", "Bitstream Vera Sans", "Verdana";
-        font-size: 13px;
-        color: #333;
-      }
+<head>
+  <title>European Commission Expert Groups</title>
 
-      h1 {
-        font-size: 28px;
-        color: #000;
-      }
+  <script src="/javascripts/application.js?1307031762" type="text/javascript"></script>
+  <meta name="csrf-param" content="authenticity_token"/>
+<meta name="csrf-token" content="r/+P5+3/NZN9hQUTHEU4oGQ03NnrEV4P7FTBbuNgjxQ="/>
+  <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+  <style type="text/css">
+  ul { list-style-type: none; }
+  .group-count, .group-code, .group-name-translated { color: grey; }
+  a { text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  dl {
+    clear: left;
+    float: left;
+    width: 640px;
+    margin: 1em 0;
+    padding: 0;
+    border-bottom: 0px solid #999;
+  }
+  dt {
+    clear: left;
+    float: left;
+    width: 120px;
+    margin: 0;
+    padding: 5px;
+    border-top: 0px solid #999;
+    font-weight: bold;
+  }
+  dd {
+    float: left;
+    width: 500px;
+    margin: 0;
+    padding: 5px;
+    border-top: 0px solid #999;
+  }
+  </style>
+</head>
+<body>
 
-      a  {color: #03c}
-      a:hover {
-        background-color: #03c;
-        color: white;
-        text-decoration: none;
-      }
+<style>
 
+.wiki_page_info {
+  font-style: italic;
+  color: #666;
+  margin-left: 5px;
+  float: left;
+}
 
-      #page {
-        background-color: #f0f0f0;
-        width: 750px;
-        margin: 0;
-        margin-left: auto;
-        margin-right: auto;
-      }
+.wiki_page_actions {
+  text-align: right;
+  width: 100%;
+  padding: 0px;
+}
 
-      #content {
-        float: left;
-        background-color: white;
-        border: 3px solid #aaa;
-        border-top: none;
-        padding: 25px;
-        width: 500px;
-      }
+.wiki_page_actions li {
+  display: inline;
+  margin: 0px;
+  padding: 0px;
+}
 
-      #sidebar {
-        float: right;
-        width: 175px;
-      }
+.wiki_content,
+.wiki_diff,
+.wiki_history {
+  border: 1px dashed #666;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+}
 
-      #footer {
-        clear: both;
-      }
+.wiki_history {
+  width: 100%;
+}
 
+.wiki_history_header td {
+  border-bottom: 2px dashed black;
+}
 
-      #header, #about, #getting-started {
-        padding-left: 75px;
-        padding-right: 30px;
-      }
+.wiki_form {
+  display: block;
+  width: 100%;
+  border: 1px dashed #666;
+}
 
+.wiki_form p {
+  padding: 10px;
+}
 
-      #header {
-        background-image: url("images/rails.png");
-        background-repeat: no-repeat;
-        background-position: top left;
-        height: 64px;
-      }
-      #header h1, #header h2 {margin: 0}
-      #header h2 {
-        color: #888;
-        font-weight: normal;
-        font-size: 16px;
-      }
+.wiki_form p input,
+.wiki_form p textarea {
+  width: 100%;
+}
 
+.wiki_form .submit {
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
 
-      #about h3 {
-        margin: 0;
-        margin-bottom: 10px;
-        font-size: 14px;
-      }
+.wiki_diff span.added {
+  background: #D4FFAB;
+  color: #509A05;
+}
 
-      #about-content {
-        background-color: #ffd;
-        border: 1px solid #fc0;
-        margin-left: -55px;
-        margin-right: -10px;
-      }
-      #about-content table {
-        margin-top: 10px;
-        margin-bottom: 10px;
-        font-size: 11px;
-        border-collapse: collapse;
-      }
-      #about-content td {
-        padding: 10px;
-        padding-top: 3px;
-        padding-bottom: 3px;
-      }
-      #about-content td.name  {color: #555}
-      #about-content td.value {color: #000}
+.wiki_diff span.removed {
+  background: #FFD8D8;
+  color: #EF2828;
+}
 
-      #about-content ul {
-        padding: 0;
-        list-style-type: none;
-      }
+</style>
 
-      #about-content.failure {
-        background-color: #fcc;
-        border: 1px solid #f00;
-      }
-      #about-content.failure p {
-        margin: 0;
-        padding: 10px;
-      }
+<h1>European Commission Expert Groups</h1>
 
+<div class="wiki_content">
+  <p>This site contains a copy of the <strong>Register of European Commission Expert Groups and Other Similar Entities</strong>. For each group, the register provides standard information such as the Commission department running the group, as well as the group&#8217;s mission, tasks and membership.</p>
+<p><strong>Browse</strong> the expert groups by:</p>
+<ul>
+	<li><a href="/policy-areas">Policy Area</a></li>
+	<li><a href="/directorate-generals">Directorate Generals</a></li>
+</ul>
+<p><strong>Download</strong> the data under the share-alike attribution Open Database License:</p>
+<ul>
+	<li><a href="/%22List%20of%20expert%20groups%22:/ec_expert_groups.csv"><a href="/ec_expert_groups.csv">List of expert groups</a></a> csv</li>
+	<li><a href="/%22Organisations%20that%20are%20members%20of%20expert%20groups%22:/ec_expert_group_organisation_members.csv"><a href="/ec_expert_group_organisation_members.csv">Organisations that are members of expert groups</a></a> csv</li>
+	<li><a href="/%22National%20administrations%20that%20are%20members%20of%20expert%20groups%22:/ec_expert_group_national_administration_members.csv"><a href="/ec_expert_group_national_administration_members.csv">National administrations that are members of expert groups</a></a> csv</li>
+	<li><a href="/%22Individual%20that%20are%20members%20of%20expert%20groups%22:/ec_expert_group_individual_members.csv"><a href="/ec_expert_group_individual_members.csv">Individual that are members of expert groups</a></a> csv</li>
+</ul>
+<p>Data source: <a href="http://ec.europa.eu/transparency/regexpert/index.cfm">Register of Commission Expert Groups</a> (external site)</p>
+</div>
 
-      #getting-started {
-        border-top: 1px solid #ccc;
-        margin-top: 25px;
-        padding-top: 15px;
-      }
-      #getting-started h1 {
-        margin: 0;
-        font-size: 20px;
-      }
-      #getting-started h2 {
-        margin: 0;
-        font-size: 14px;
-        font-weight: normal;
-        color: #333;
-        margin-bottom: 25px;
-      }
-      #getting-started ol {
-        margin-left: 0;
-        padding-left: 0;
-      }
-      #getting-started li {
-        font-size: 18px;
-        color: #888;
-        margin-bottom: 25px;
-      }
-      #getting-started li h2 {
-        margin: 0;
-        font-weight: normal;
-        font-size: 18px;
-        color: #333;
-      }
-      #getting-started li p {
-        color: #555;
-        font-size: 13px;
-      }
+<div style="clear: left; float: left;">
+  <div class="wiki_page_info">
+  Revised on June 05, 2011 14:57 by &lt;Unknown&gt;
+</div>
+  <ul class="wiki_page_actions">
+  <li><a href="/history/expert-groups">History</a></li>
+  <li><a href="/edit/expert-groups">Edit</a></li>
+  <li><a href="/expert-groups" data-confirm="Destroyed page cann't be restored. Are you ready for it?" data-method="delete" rel="nofollow">Destroy</a></li>
+</ul>
+
+</div>
 
 
-      #sidebar ul {
-        margin-left: 0;
-        padding-left: 0;
-      }
-      #sidebar ul h3 {
-        margin-top: 25px;
-        font-size: 16px;
-        padding-bottom: 10px;
-        border-bottom: 1px solid #ccc;
-      }
-      #sidebar li {
-        list-style-type: none;
-      }
-      #sidebar ul.links li {
-        margin-bottom: 5px;
-      }
-
-    </style>
-    <script type="text/javascript">
-      function about() {
-        info = document.getElementById('about-content');
-        if (window.XMLHttpRequest)
-          { xhr = new XMLHttpRequest(); }
-        else
-          { xhr = new ActiveXObject("Microsoft.XMLHTTP"); }
-        xhr.open("GET","rails/info/properties",false);
-        xhr.send("");
-        info.innerHTML = xhr.responseText;
-        info.style.display = 'block'
-      }
-    </script>
-  </head>
-  <body>
-    <div id="page">
-      <div id="sidebar">
-        <ul id="sidebar-items">
-          <li>
-            <h3>Browse the documentation</h3>
-            <ul class="links">
-              <li><a href="http://api.rubyonrails.org/">Rails API</a></li>
-              <li><a href="http://stdlib.rubyonrails.org/">Ruby standard library</a></li>
-              <li><a href="http://corelib.rubyonrails.org/">Ruby core</a></li>
-              <li><a href="http://guides.rubyonrails.org/">Rails Guides</a></li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-
-      <div id="content">
-        <div id="header">
-          <h1>Welcome aboard</h1>
-          <h2>You&rsquo;re riding Ruby on Rails!</h2>
-        </div>
-
-        <div id="about">
-          <h3><a href="rails/info/properties" onclick="about(); return false">About your application&rsquo;s environment</a></h3>
-          <div id="about-content" style="display: none"></div>
-        </div>
-
-        <div id="getting-started">
-          <h1>Getting started</h1>
-          <h2>Here&rsquo;s how to get rolling:</h2>
-
-          <ol>
-            <li>
-              <h2>Use <code>rails generate</code> to create your models and controllers</h2>
-              <p>To see all available options, run it without parameters.</p>
-            </li>
-
-            <li>
-              <h2>Set up a default route and remove or rename this file</h2>
-              <p>Routes are set up in config/routes.rb.</p>
-            </li>
-
-            <li>
-              <h2>Create your database</h2>
-              <p>Run <code>rake db:migrate</code> to create your database. If you're not using SQLite (the default), edit <code>config/database.yml</code> with your username and password.</p>
-            </li>
-          </ol>
-        </div>
-      </div>
-
-      <div id="footer">&nbsp;</div>
-    </div>
-  </body>
+<style>
+  .wiki_content { border: 0px solid #999; }
+</style>
+</body>
 </html>

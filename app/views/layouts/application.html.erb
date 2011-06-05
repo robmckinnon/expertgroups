@@ -5,17 +5,44 @@
   <%= stylesheet_link_tag :all %>
   <%= javascript_include_tag :defaults %>
   <%= csrf_meta_tag %>
+  <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
   <style type="text/css">
   ul { list-style-type: none; }
   .group-count, .group-code, .group-name-translated { color: grey; }
   a { text-decoration: none; }
   a:hover { text-decoration: underline; }
-  dt { font-weight: bold}
+  dl {
+    clear: left;
+    float: left;
+    width: 640px;
+    margin: 1em 0;
+    padding: 0;
+    border-bottom: 0px solid #999;
+  }
+  dt {
+    clear: left;
+    float: left;
+    width: 120px;
+    margin: 0;
+    padding: 5px;
+    border-top: 0px solid #999;
+    font-weight: bold;
+  }
+  dd {
+    float: left;
+    width: 500px;
+    margin: 0;
+    padding: 5px;
+    border-top: 0px solid #999;
+  }
   </style>
 </head>
 <body>
 
 <%= yield %>
 
+<style>
+  .wiki_content { border: 0px solid #999; }
+</style>
 </body>
 </html>
