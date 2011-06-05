@@ -211,7 +211,7 @@ end
 def add_organisation_fields name, organisation, content
   add_field content, organisation, 'Name', :name if organisation.name != name
   add_field content, organisation, 'Member type', :member_type
-  add_field content, organisation, 'Area represented', :countries_areas_represented
+  add_field content, organisation, 'Region', :countries_areas_represented
   unless organisation.representatives.nil? || organisation.representatives[/Representative may vary/]
     content << "- Representatives :=\n#{organisation.representatives} =:" if organisation.representatives && organisation.representatives.size > 0
   end
@@ -445,25 +445,32 @@ def create_entity_indexes entities, group_to_en_name, title, supertype, subtype=
 end
 
 def create_home_page
-  content = ["This site contains a copy of the *Register of European Commission Expert Groups and Other Similar Entities*. For each group, the register provides standard information such as the Commission department running the group, as well as the group's mission, tasks and membership.\n\n"]
+  content = []
+  content << "h3. Expert groups influence European Union legislation and policy\n"
 
-  content << "We made this web application to allow you to *browse expert groups* by:"
-  content << "* [[policy-areas|Policy Area]]"
-  content << "* [[organisations|Organisations]]\n"
-  content << "* [[directorate-generals|Directorate Generals]]\n"
+  content << "p. Expert groups are set up by the European Commission to help it with the preparation of legislative proposals, policy initiatives, and delegated acts, and also to help it with the implementation of existing EU legislation, programmes and policies.\n"
 
-  content << "*Download* the data under the share-alike attribution Open Database License:"
-  content << %Q|* [["List of expert groups":/ec_expert_groups.csv]] csv|
-  content << %Q|* [["Organisations that are members of expert groups":/ec_expert_group_organisation_members.csv]] csv|
-  content << %Q|* [["National administrations that are members of expert groups":/ec_expert_group_national_administration_members.csv]] csv|
-  content << %Q|* [["Individual that are members of expert groups":/ec_expert_group_individual_members.csv]] csv\n\n|
+  content << "p. Expert groups can have individuals, organisations, and national authorities as members.\n"
 
-  content << "Data source: \"Register of Commission Expert Groups\":http://ec.europa.eu/transparency/regexpert/index.cfm (external site)"
+  content << "p. Browsing the official register of expert groups is very difficult, as the EU have hidden it behind a search form on their website. Even Google has not been able to index it, so you don't see the register in Google search results.\n"
+
+  content << "h3. We made this web application to make it easier for you to *browse expert groups* by:"
+  content << "* %(big)[[policy-areas|Policy Areas]]% _e.g. [[energy|Energy]]_"
+  content << "* %(big1)[[organisations|Organisations]]% _e.g. [[acea|ACEA - European Automobile Manufacturers' Association]]_"
+  content << "* %(big2)[[directorate-generals|Directorate Generals]]% _e.g. [[information-society-and-media-dg|Information Society and Media DG]]_\n"
+
+  content << "p. You can *download* our database and use it under the terms of the share-alike, attribution \"Open Database License\":http://www.opendatacommons.org/licenses/odbl/ \n"
+  content << %Q|* download [["list of expert groups _(csv, 784K)_":/ec_expert_groups.csv]]|
+  content << %Q|* download [["organisations that are members of expert groups _(csv, 2.9M)_":/ec_expert_group_organisation_members.csv]]|
+  content << %Q|* download [["national administrations that are members of expert groups _(csv, 7.3M)_":/ec_expert_group_national_administration_members.csv]]|
+  content << %Q|* download [["individuals that are members of expert groups _(csv, 1.6M)_":/ec_expert_group_individual_members.csv]]\n\n|
+
+  content << "p. This web application contains a copy of the *Register of European Commission Expert Groups and Other Similar Entities*, as at May 2011. Data source: \"Register of Commission Expert Groups\":http://ec.europa.eu/transparency/regexpert/index.cfm (external site)\n"
   create_page('expert-groups','European Commission Expert Groups', content)
 end
 
 create_home_page
-
+=begin
 individuals = {}
 load_file('ec_expert_group_individual_members.csv') { |items| individuals = items }
 
@@ -487,4 +494,4 @@ create_entity_indexes(individuals, group_to_en_name, 'Individuals', nil) { |name
 create_organisation_indexes organisations, group_to_en_name
 
 create_entity_indexes(administrations, group_to_en_name, 'National Administrations', nil) { |name, entity, fields| add_administration_fields entity, fields }
-
+=end

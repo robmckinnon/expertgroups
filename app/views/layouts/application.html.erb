@@ -16,6 +16,7 @@
     max-width:100%;
     width:61em;
   }
+  p { width:50em; }
   ul { list-style-type: none; }
   .group-count, .group-code, .group-name-translated { color: grey; }
   a { text-decoration: none; }
@@ -23,7 +24,21 @@
   h3 {
     clear: left;
   }
-
+  .big {
+    margin-left: 5em;
+    font-size: 1.3em;
+    margin-right: 4.5em;
+  }
+  .big1 {
+    margin-left: 5em;
+    font-size: 1.3em;
+    margin-right: 4em;
+  }
+  .big2 {
+    margin-left: 5em;
+    font-size: 1.3em;
+    margin-right: 1em;
+  }
   dl {
     clear: left;
     float: left;
@@ -55,7 +70,7 @@
   <div id="page">
     <%= yield %>
 
-    <p>Created by <a href="http://twitter.com/delineator">@delineator</a> to make it easier to browse data on European Commission Expert Groups.</p>
+    <p style="clear: left;">Created by <a href="http://twitter.com/delineator">@delineator</a> to make it easier to browse data on European Commission Expert Groups.</p>
   </div>
 
   <style>

@@ -1,17 +1,46 @@
+
 <!DOCTYPE html>
 <html>
 <head>
-  <title>European Commission Expert Groups</title>
+  <title>Expertgroups</title>
 
   <script src="/javascripts/application.js?1307031762" type="text/javascript"></script>
   <meta name="csrf-param" content="authenticity_token"/>
 <meta name="csrf-token" content="r/+P5+3/NZN9hQUTHEU4oGQ03NnrEV4P7FTBbuNgjxQ="/>
   <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
   <style type="text/css">
+  body {
+    font-family: sans-serif;
+  }
+  #page {
+    margin-left:auto;
+    margin-right:auto;
+    max-width:100%;
+    width:61em;
+  }
+  p { width:50em; }
   ul { list-style-type: none; }
   .group-count, .group-code, .group-name-translated { color: grey; }
   a { text-decoration: none; }
   a:hover { text-decoration: underline; }
+  h3 {
+    clear: left;
+  }
+  .big {
+    margin-left: 5em;
+    font-size: 1.3em;
+    margin-right: 4.5em;
+  }
+  .big1 {
+    margin-left: 5em;
+    font-size: 1.3em;
+    margin-right: 4em;
+  }
+  .big2 {
+    margin-left: 5em;
+    font-size: 1.3em;
+    margin-right: 1em;
+  }
   dl {
     clear: left;
     float: left;
@@ -40,7 +69,8 @@
 </head>
 <body>
 
-<style>
+  <div id="page">
+    <style>
 
 .wiki_page_info {
   font-style: italic;
@@ -113,38 +143,46 @@
 <h1>European Commission Expert Groups</h1>
 
 <div class="wiki_content">
-  <p>This site contains a copy of the <strong>Register of European Commission Expert Groups and Other Similar Entities</strong>. For each group, the register provides standard information such as the Commission department running the group, as well as the group&#8217;s mission, tasks and membership.</p>
-<p><strong>Browse</strong> the expert groups by:</p>
+  <h3>Expert groups influence European Union legislation and policy</h3>
+<p>Expert groups are set up by the European Commission to help it with the preparation of legislative proposals, policy initiatives, and delegated acts, and also to help it with the implementation of existing EU legislation, programmes and policies.</p>
+<p>Expert groups can have individuals, organisations, and national authorities as members.</p>
+<p>Browsing the official register of expert groups is very difficult, as the EU have hidden it behind a search form on their website. Even Google has not been able to index it, so you don&#8217;t see the register in Google search results.</p>
+<h3>We made this web application to make it easier for you to <strong>browse expert groups</strong> by:</h3>
 <ul>
-	<li><a href="/policy-areas">Policy Area</a></li>
-	<li><a href="/organisations">Organisations</a></li>
-	<li><a href="/directorate-generals">Directorate Generals</a></li>
+	<li><span class="big"><a href="/policy-areas">Policy Areas</a></span> <em>e.g. <a href="/energy">Energy</em></a></li>
+	<li><span class="big1"><a href="/organisations">Organisations</a></span> <em>e.g. <a href="/acea"><span class="caps">ACEA</span> &#8211; European Automobile Manufacturers&#8217; Association</em></a></li>
+	<li><span class="big2"><a href="/directorate-generals">Directorate Generals</a></span> <em>e.g. <a href="/information-society-and-media-dg">Information Society and Media DG</em></a></li>
 </ul>
-<p><strong>Download</strong> the data under the share-alike attribution Open Database License:</p>
+<p>You can <strong>download</strong> our database and use it under the terms of the share-alike, attribution <a href="http://www.opendatacommons.org/licenses/odbl/">Open Database License</a></p>
 <ul>
-	<li><a href="/%22List%20of%20expert%20groups%22:/ec_expert_groups.csv"><a href="/ec_expert_groups.csv">List of expert groups</a></a> csv</li>
-	<li><a href="/%22Organisations%20that%20are%20members%20of%20expert%20groups%22:/ec_expert_group_organisation_members.csv"><a href="/ec_expert_group_organisation_members.csv">Organisations that are members of expert groups</a></a> csv</li>
-	<li><a href="/%22National%20administrations%20that%20are%20members%20of%20expert%20groups%22:/ec_expert_group_national_administration_members.csv"><a href="/ec_expert_group_national_administration_members.csv">National administrations that are members of expert groups</a></a> csv</li>
-	<li><a href="/%22Individual%20that%20are%20members%20of%20expert%20groups%22:/ec_expert_group_individual_members.csv"><a href="/ec_expert_group_individual_members.csv">Individual that are members of expert groups</a></a> csv</li>
+	<li>download <a href="/%22list%20of%20expert%20groups%20_(csv,%20784K)_%22:/ec_expert_groups.csv"><a href="/ec_expert_groups.csv">list of expert groups <em>(csv, 784K)</em></a></a></li>
+	<li>download <a href="/%22organisations%20that%20are%20members%20of%20expert%20groups%20_(csv,%202.9M)_%22:/ec_expert_group_organisation_members.csv"><a href="/ec_expert_group_organisation_members.csv">organisations that are members of expert groups <em>(csv, 2.9M)</em></a></a></li>
+	<li>download <a href="/%22national%20administrations%20that%20are%20members%20of%20expert%20groups%20_(csv,%207.3M)_%22:/ec_expert_group_national_administration_members.csv"><a href="/ec_expert_group_national_administration_members.csv">national administrations that are members of expert groups <em>(csv, 7.3M)</em></a></a></li>
+	<li>download <a href="/%22individuals%20that%20are%20members%20of%20expert%20groups%20_(csv,%201.6M)_%22:/ec_expert_group_individual_members.csv"><a href="/ec_expert_group_individual_members.csv">individuals that are members of expert groups <em>(csv, 1.6M)</em></a></a></li>
 </ul>
-<p>Data source: <a href="http://ec.europa.eu/transparency/regexpert/index.cfm">Register of Commission Expert Groups</a> (external site)</p>
+<p>This web application contains a copy of the <strong>Register of European Commission Expert Groups and Other Similar Entities</strong>, as at May 2011. Data source: <a href="http://ec.europa.eu/transparency/regexpert/index.cfm">Register of Commission Expert Groups</a> (external site)</p>
 </div>
 
+<!--
 <div style="clear: left; float: left;">
   <div class="wiki_page_info">
-  Revised on June 05, 2011 14:57 by &lt;Unknown&gt;
+  Revised on June 05, 2011 22:33 by &lt;Unknown&gt;
 </div>
   <ul class="wiki_page_actions">
-  <li><a href="/history/expert-groups">History</a></li>
-  <li><a href="/edit/expert-groups">Edit</a></li>
-  <li><a href="/expert-groups" data-confirm="Destroyed page cann't be restored. Are you ready for it?" data-method="delete" rel="nofollow">Destroy</a></li>
+
+
+
 </ul>
 
 </div>
+-->
 
 
-<style>
-  .wiki_content { border: 0px solid #999; }
-</style>
+    <p style="clear: left;">Created by <a href="http://twitter.com/delineator">@delineator</a> to make it easier to browse data on European Commission Expert Groups.</p>
+  </div>
+
+  <style>
+    .wiki_content { border: 0px solid #999; }
+  </style>
 </body>
 </html>
