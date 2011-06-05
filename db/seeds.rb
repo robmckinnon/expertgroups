@@ -143,7 +143,8 @@ def create_group_page group, individuals, organisations, administrations
   if administrations && administrations.size > 0
     content << "\nh3. Administrations Group Members\n"
     administrations.sort_by(&:name).each do |administration|
-      content << "[[#{path(administration.name)}|#{ clean_text(administration.name) }]]"
+      authorities = administration.public_authorities ? " - #{ administration.public_authorities.split("\n").join("; ") }" : ''
+      content << "[[#{path(administration.name)}|#{ clean_text(administration.name) }]]#{authorities}"
     end
   end
   title = "#{group.en_name.strip.sub('“','').sub('”','').gsub('"','')} #{group.abbreviation ? "(#{group.abbreviation})" : ""} (#{group.code})"
@@ -211,14 +212,19 @@ def add_organisation_fields name, organisation, content
   add_field content, organisation, 'Name', :name if organisation.name != name
   add_field content, organisation, 'Member type', :member_type
   add_field content, organisation, 'Area represented', :countries_areas_represented
-  unless organisation.representatives[/Representative may vary/]
+  unless organisation.representatives.nil? || organisation.representatives[/Representative may vary/]
     content << "- Representatives :=\n#{organisation.representatives} =:" if organisation.representatives && organisation.representatives.size > 0
   end
 end
 
 def add_administration_fields administration, content
-  content << "- Public authorities :=\n#{administration.public_authorities} =:" if administration.public_authorities && administration.public_authorities.size > 0
-  unless organisation.representatives[/Representative may vary/]
+  if administration.public_authorities
+    if administration.public_authorities.split("\n").size > 1
+      content << "- Public authorities :=\n#{administration.public_authorities} =:"
+    elsif administration.public_authorities.size > 0
+      content << "- Public authorities := #{administration.public_authorities}"
+    end
+  unless administration.representatives.nil? || administration.representatives[/Representative may vary/]
     content << "- Representatives :=\n#{administration.representatives} =:" if administration.representatives && administration.representatives.size > 0
   end
 end
@@ -244,7 +250,7 @@ def create_entity_page name, list, group_to_en_name, type, supertype, subtype=ni
               [crumb_trail(type, name)]
             end
   by_group = list.group_by(&:group_name)
-  content << "\n*#{name}* is a member of #{by_group.keys.uniq} expert group#{by_group.keys.uniq.size > 1 ? 's' : ''}.\n"
+  content << "\n*#{name}* is a member of #{by_group.keys.uniq.size} expert group#{by_group.keys.uniq.size > 1 ? 's' : ''}.\n"
   by_group.keys.sort.each do |group_name|
     items = by_group[group_name]
     group_name = group_to_en_name[clean_text(group_name)]
