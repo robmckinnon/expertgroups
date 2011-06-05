@@ -206,6 +206,7 @@ end
 def add_organisation_fields name, organisation, content
   add_field content, organisation, 'Name', :name if organisation.name != name
   add_field content, organisation, 'Member type', :member_type
+  add_field content, organisation, 'Area represented', :countries_areas_represented
 end
 
 def add_administration_fields administration, content
@@ -221,9 +222,13 @@ def add_individual_fields individual, content
   add_field content, individual, 'Gender', :gender
 end
 
-def create_entity_page name, list, group_to_en_name, type, supertype
+def create_entity_page name, list, group_to_en_name, type, supertype, subtype=nil
   content = if supertype
-              [crumb_trail(supertype, type, name)]
+              if subtype
+                [crumb_trail(supertype, subtype, type, name)]
+              else
+                [crumb_trail(supertype, type, name)]
+              end
             else
               [crumb_trail(type, name)]
             end
@@ -360,8 +365,18 @@ def create_organisation_indexes organisations, group_to_en_name
   organisations_by_category = organisations.group_by {|x| x.category.pluralize }
 
   organisations_by_category.each do |category, list|
-    create_entity_indexes(list, group_to_en_name, category, 'Organisations') do |name, entity, fields|
-      add_organisation_fields name, entity, fields
+
+    organisations_by_region = list.group_by(&:countries_areas_represented)
+    content = [crumb_trail('Organisations', category)]
+    content << "h2. #{category} in Expert Groups\n"
+    content = create_index_for(content, organisations_by_region)
+    create_page(category.downcase.gsub(' ','-'), "#{title} - European Commission Expert Groups", content)
+
+    organisations_by_region.each do |region, orgs|
+      title = "#{category} (#{region})"
+      create_entity_indexes(orgs, group_to_en_name, title, 'Organisations', category) do |name, entity, fields|
+        add_organisation_fields name, entity, fields
+      end
     end
   end
 
@@ -371,9 +386,13 @@ def create_organisation_indexes organisations, group_to_en_name
   create_page('organisations', "Organisations - European Commission Expert Groups", content)
 end
 
-def create_entity_indexes entities, group_to_en_name, title, supertype
+def create_entity_indexes entities, group_to_en_name, title, supertype, subtype=nil
   content = if supertype
-              [crumb_trail(supertype, title)]
+              if subtype
+                [crumb_trail(supertype, subtype, title)]
+              else
+                [crumb_trail(supertype, title)]
+              end
             else
               [crumb_trail(title)]
             end
@@ -384,7 +403,7 @@ def create_entity_indexes entities, group_to_en_name, title, supertype
   create_page(title.downcase.gsub(' ','-'), "#{title} - European Commission Expert Groups", content)
 
   entities.group_by(&:link_name).each do |name, list|
-    create_entity_page(clean_text(name), list, group_to_en_name, title, supertype) do |name, entity, fields|
+    create_entity_page(clean_text(name), list, group_to_en_name, title, supertype, subtype) do |name, entity, fields|
       yield name, entity, fields
     end
   end
