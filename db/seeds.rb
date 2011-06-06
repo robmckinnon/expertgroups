@@ -89,6 +89,13 @@ def load_file file
   items
 end
 
+def add_to_page path, content
+  content = content.flatten.join("\n") if content.is_a?(Array)
+  page = WikiPage.find_or_create_by_path(path)
+  page.content = "#{page.content}\n#{content}"
+  page.save
+end
+
 def create_page path, title, content
   content = content.flatten.join("\n") if content.is_a?(Array)
   page = WikiPage.find_or_create_by_path(path)
@@ -97,7 +104,7 @@ def create_page path, title, content
   page.save
 end
 
-def create_group_page group, individuals, organisations, administrations
+def create_group_page group, individuals, organisations, administrations, policy_areas
   content = []
   dgs = "Directorate Generals"
 
@@ -136,7 +143,13 @@ def create_group_page group, individuals, organisations, administrations
   if organisations && organisations.size > 0
     content << "\nh3. Organisation Group Members\n"
     organisations.sort_by(&:name).each do |organisation|
-      content << "[[#{path(organisation.link_name)}|#{ clean_text(organisation.name) }]]"
+      if policy_areas[path(organisation.link_name)]
+        new_name = "#{organisation.link_name} (#{organisation.countries_areas_represented})"
+        puts "Policy name clash: #{organisation.link_name} #{new_name}"
+        content << "[[#{path(new_name)}|#{ clean_text(new_name) }]]"
+      else
+        content << "[[#{path(organisation.link_name)}|#{ clean_text(organisation.name) }]]"
+      end
     end
   end
 
@@ -186,7 +199,7 @@ def create_policy_index policy, groups
   create_page path(policy), title, content
 end
 
-def create_dg_index dg, groups, individuals, organisations, administrations
+def create_dg_index dg, groups, individuals, organisations, administrations, policy_areas
   content = [ crumb_trail("Directorate Generals", dg) ]
 
   content <<  group_count_sentence("The *#{dg.sub(' DG',' Directorate General')}* is lead DG", groups)
@@ -198,7 +211,7 @@ def create_dg_index dg, groups, individuals, organisations, administrations
     sorted_groups = list.sort_by {|g| g.en_name}
     content << sorted_groups.collect {|g| "* [[#{path(g.en_name)}|#{g.en_name}]] %(group-code)#{g.code}%"}
 
-    sorted_groups.each {|g| create_group_page g, individuals[g.code], organisations[g.code], administrations[g.code] }
+    sorted_groups.each {|g| create_group_page g, individuals[g.code], organisations[g.code], administrations[g.code], policy_areas }
   end
   title = "#{dg} - European Commission Expert Groups"
   create_page path(dg), title, content
@@ -240,7 +253,7 @@ def add_individual_fields individual, content
   add_field content, individual, 'Gender', :gender
 end
 
-def create_entity_page name, list, group_to_en_name, type, supertype, subtype=nil
+def create_entity_page name, list, group_to_en_name, directorate_generals, policy_areas, type, supertype, subtype=nil
   content = if supertype
               if subtype
                 [crumb_trail(supertype, subtype, type, name)]
@@ -280,7 +293,18 @@ def create_entity_page name, list, group_to_en_name, type, supertype, subtype=ni
 
     content << "- Source := \"EC Register of Expert Groups\":#{uri}" if uri
   end
-  create_page path(name), name, content
+
+  if directorate_generals[path(name)]
+    puts "Directorate general clash: #{name}"
+    content = content[1,(content.size-1)]
+    add_to_page path(name), content
+  elsif policy_areas[path(name)]
+    new_name = "#{name} (#{list.first.countries_areas_represented})"
+    puts "Policy name clash: #{name} #{new_name}"
+    create_page path(new_name), new_name, content
+  else
+    create_page path(name), name, content
+  end
 end
 
 def create_index_for content, groups_by_label
@@ -292,7 +316,7 @@ def create_index_for content, groups_by_label
   content
 end
 
-def create_dg_indexes groups, individuals, organisations, administrations
+def create_dg_indexes groups, individuals, organisations, administrations, directorate_generals, policy_areas
   content = [crumb_trail('Directorate Generals')]
   content << 'h2. Directorate-Generals with Expert Groups'
 
@@ -301,11 +325,12 @@ def create_dg_indexes groups, individuals, organisations, administrations
   create_page('directorate-generals','Directorate Generals - European Commission Expert Groups', content)
 
   by_dg.each do |dg, list|
-    create_dg_index dg, list, individuals.group_by(&:group_code), organisations.group_by(&:group_code), administrations.group_by(&:group_code)
+    directorate_generals[path(dg)] = dg
+    create_dg_index dg, list, individuals.group_by(&:group_code), organisations.group_by(&:group_code), administrations.group_by(&:group_code), policy_areas
   end
 end
 
-def create_policy_indexes groups, group_to_en_name
+def create_policy_indexes groups, group_to_en_name, policy_areas
   content = [crumb_trail('Policy Areas')]
   content << 'h2. Expert Group Policy Areas'
 
@@ -319,6 +344,7 @@ def create_policy_indexes groups, group_to_en_name
   create_page('policy-areas','Policy Areas - European Commission Expert Groups', content)
 
   by_policy.each do |policy, list|
+    policy_areas[path(policy)] = policy
     create_policy_index policy, list
   end
 end
@@ -384,7 +410,7 @@ def remove_singleton_acronyms(organisations)
   end
 end
 
-def create_organisation_indexes organisations, group_to_en_name
+def create_organisation_indexes organisations, group_to_en_name, directorate_generals, policy_areas
   remove_singleton_acronyms(organisations)
   organisations_by_category = organisations.group_by {|x| x.category.pluralize }
 
@@ -409,7 +435,7 @@ def create_organisation_indexes organisations, group_to_en_name
 
     organisations_by_region.each do |category_region, orgs|
       title = category_region
-      create_entity_indexes(orgs, group_to_en_name, title, 'Organisations', category) do |name, entity, fields|
+      create_entity_indexes(orgs, group_to_en_name, directorate_generals, policy_areas, title, 'Organisations', category) do |name, entity, fields|
         add_organisation_fields name, entity, fields
       end
     end
@@ -421,7 +447,7 @@ def create_organisation_indexes organisations, group_to_en_name
   create_page('organisations', "Organisations - European Commission Expert Groups", content)
 end
 
-def create_entity_indexes entities, group_to_en_name, title, supertype, subtype=nil
+def create_entity_indexes entities, group_to_en_name, directorate_generals, policy_areas, title, supertype, subtype=nil
   content = if supertype
               if subtype
                 [crumb_trail(supertype, subtype, title)]
@@ -438,7 +464,7 @@ def create_entity_indexes entities, group_to_en_name, title, supertype, subtype=
   create_page(path(title.downcase.gsub(' ','-')), "#{title} - European Commission Expert Groups", content)
 
   entities.group_by(&:link_name).each do |name, list|
-    create_entity_page(clean_text(name), list, group_to_en_name, title, supertype, subtype) do |name, entity, fields|
+    create_entity_page(clean_text(name), list, group_to_en_name, directorate_generals, policy_areas, title, supertype, subtype) do |name, entity, fields|
       yield name, entity, fields
     end
   end
@@ -482,16 +508,19 @@ load_file('ec_expert_group_national_administration_members.csv') { |items| admin
 
 group_to_en_name = {}
 
+directorate_generals = {}
+policy_areas = {}
+
 load_file('ec_expert_groups.csv') do |groups|
   groups.each {|g| group_to_en_name[clean_text(g.name)] = clean_text(g.en_name) }
 
-  create_dg_indexes groups, individuals, organisations, administrations
-  create_policy_indexes groups, group_to_en_name
+  create_policy_indexes groups, group_to_en_name, policy_areas
+  create_dg_indexes groups, individuals, organisations, administrations, directorate_generals, policy_areas
 end
 
-create_entity_indexes(individuals, group_to_en_name, 'Individuals', nil) { |name, entity, fields| add_individual_fields entity, fields }
+create_entity_indexes(individuals, group_to_en_name, directorate_generals, policy_areas, 'Individuals', nil) { |name, entity, fields| add_individual_fields entity, fields }
 
-create_organisation_indexes organisations, group_to_en_name
+create_organisation_indexes organisations, group_to_en_name, directorate_generals, policy_areas
 
-create_entity_indexes(administrations, group_to_en_name, 'National Administrations', nil) { |name, entity, fields| add_administration_fields entity, fields }
+create_entity_indexes(administrations, group_to_en_name, directorate_generals, policy_areas, 'National Administrations', nil) { |name, entity, fields| add_administration_fields entity, fields }
 # =end
